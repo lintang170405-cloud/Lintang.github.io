@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Lintang Portfolio</title>
+
+  <style>
+    :root {
+      --bg: #12002b;
+      --panel: #1e0644;
+      --panel-2: #2b0f5d;
+      --text: #fff4c2;
+      --muted: #c9b8ff;
+      --pink: #ff4fd8;
+      --cyan: #4dfcff;
+      --yellow: #ffe66d;
+      --green: #47ff85;
+      --shadow: rgba(255, 79, 216, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(255, 79, 216, 0.24), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(77, 252, 255, 0.18), transparent 32%),
+        linear-gradient(180deg, #12002b, #090014);
+      font-family: "Courier New", monospace;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.04) 0,
+        rgba(255,255,255,0.04) 1px,
+        transparent 1px,
+        transparent 4px
+      );
+      mix-blend-mode: screen;
+      opacity: 0.45;
+      z-index: 100;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(
+        rgba(18, 0, 43, 0),
+        rgba(255, 79, 216, 0.08),
+        rgba(18, 0, 43, 0)
+      );
+      animation: scan 4s linear infinite;
+      z-index: 101;
+    }
+
+    @keyframes scan {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+
+    .pixel-grid {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(77,252,255,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(77,252,255,0.08) 1px, transparent 1px);
+      background-size: 44px 44px;
+      transform: perspective(600px) rotateX(62deg) translateY(160px);
+      transform-origin: bottom;
+      animation: gridMove 3s linear infinite;
+      opacity: 0.45;
+    }
+
+    @keyframes gridMove {
+      from { background-position: 0 0; }
+      to { background-position: 0 44px; }
+    }
+
+    .container {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(18, 0, 43, 0.78);
+      backdrop-filter: blur(12px);
+      border-bottom: 2px solid var(--cyan);
+      box-shadow: 0 0 22px rgba(77, 252, 255, 0.24);
+    }
+
+    .nav {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .logo {
+      color: var(--yellow);
+      font-weight: 900;
+      text-shadow: 3px 3px 0 var(--pink);
+      letter-spacing: 1px;
+    }
+
+    .nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      margin-left: 14px;
+    }
+
+    .nav a:hover {
+      color: var(--cyan);
+      text-shadow: 0 0 10px var(--cyan);
+    }
+
+    .hero {
+      min-height: calc(100vh - 72px);
+      display: grid;
+      align-items: center;
+      padding: 80px 0;
+    }
+
+    .hero-card {
+      border: 4px solid var(--cyan);
+      background:
+        linear-gradient(135deg, rgba(43, 15, 93, 0.92), rgba(30, 6, 68, 0.92));
+      box-shadow:
+        10px 10px 0 var(--pink),
+        0 0 34px rgba(77, 252, 255, 0.25);
+      padding: clamp(24px, 5vw, 46px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "PLAYER 01";
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 8px 12px;
+      border: 2px solid var(--yellow);
+      color: var(--yellow);
+      background: rgba(255, 230, 109, 0.08);
+      margin-bottom: 20px;
+      box-shadow: 4px 4px 0 rgba(255, 230, 109, 0.25);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(44px, 9vw, 92px);
+      line-height: 0.95;
+      letter-spacing: -3px;
+      color: var(--text);
+      text-shadow:
+        4px 4px 0 var(--pink),
+        -3px -3px 0 var(--cyan);
+    }
+
+    .type {
+      color: var(--green);
+      font-size: clamp(20px, 3vw, 32px);
+      margin-top: 24px;
+      min-height: 40px;
+    }
+
+    .type::after {
+      content: "_";
+      animation: blink 0.8s steps(1) infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    .hero p {
+      max-width: 720px;
+      color: var(--muted);
+      font-size: 17px;
+      margin: 22px 0 0;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 30px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 12px 18px;
+      border: 3px solid var(--text);
+      background: var(--yellow);
+      color: #1b1035;
+      text-decoration: none;
+      font-weight: 900;
+      box-shadow: 6px 6px 0 var(--pink);
+      transition: 0.18s ease;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 9px 9px 0 var(--pink);
+    }
+
+    .btn.secondary {
+      background: var(--cyan);
+    }
+
+    .btn.whatsapp {
+      background: var(--green);
+    }
+
+    section {
+      padding: 70px 0;
+    }
+
+    .section-head {
+      margin-bottom: 28px;
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: clamp(30px, 5vw, 54px);
+      color: var(--yellow);
+      text-shadow: 3px 3px 0 var(--pink);
+    }
+
+    .section-head p {
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .panel {
+      border: 3px solid var(--cyan);
+      background: rgba(30, 6, 68, 0.92);
+      padding: 22px;
+      box-shadow: 7px 7px 0 rgba(255, 79, 216, 0.7);
+    }
+
+    .panel h3 {
+      margin: 0 0 10px;
+      color: var(--green);
+    }
+
+    .panel p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .tag {
+      border: 2px solid var(--yellow);
+      color: var(--yellow);
+      padding: 7px 10px;
+      background: rgba(255, 230, 109, 0.08);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .projects,
+    .portfolio {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .project-card,
+    .media-card {
+      border: 3px solid var(--cyan);
+      background: rgba(30, 6, 68, 0.94);
+      box-shadow: 8px 8px 0 rgba(255, 79, 216, 0.72);
+      overflow: hidden;
+      animation: floaty 4s ease-in-out infinite;
+    }
+
+    .project-card:nth-child(2n),
+    .media-card:nth-child(2n) {
+      animation-delay: 0.7s;
+    }
+
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-7px); }
+    }
+
+    .project-card {
+      padding: 22px;
+    }
+
+    .project-card span,
+    .media-card span {
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .project-card h3,
+    .media-card h3 {
+      margin: 8px 0 10px;
+      color: var(--text);
+    }
+
+    .project-card p,
+    .media-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .media-card img,
+    .media-card video {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      display: block;
+      background: #0b001d;
+      border-bottom: 3px solid var(--cyan);
+    }
+
+    .media-content {
+      padding: 16px;
+    }
+
+    .footer {
+      padding: 40px 0;
+      text-align: center;
+      border-top: 2px solid var(--cyan);
+      color: var(--muted);
+    }
+
+    .error {
+      color: var(--yellow);
+      border: 2px solid var(--yellow);
+      padding: 14px;
+      background: rgba(255, 230, 109, 0.08);
+    }
+
+    @media (max-width: 780px) {
+      .nav nav {
+        display: none;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        display: block;
+      }
+
+      .section-head p {
+        margin-top: 10px;
+      }
+
+      .hero-card {
+        box-shadow:
+          6px 6px 0 var(--pink),
+          0 0 24px rgba(77, 252, 255, 0.22);
+      }
+
+      h1 {
+        letter-spacing: -2px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="pixel-grid"></div>
+
+  <header>
+    <div class="container nav">
+      <div class="logo">LINTANG.EXE</div>
+
+      <nav>
+        <a href="#about">ABOUT</a>
+        <a href="#skills">SKILLS</a>
+        <a href="#projects">PROJECTS</a>
+        <a href="#portfolio">GALLERY</a>
+        <a href="#contact">CONTACT</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-card">
+          <div class="badge" id="role">MAHASISWA AKTIF</div>
+
+          <h1 id="name">Lintang Nur Fadhillah Yunus</h1>
+
+          <div class="type" id="typeText">Berani dan Kreatif</div>
+
+          <p id="bio">
+            Mahasiswa aktif Psikologi yang tertarik pada desain grafis,
+            pengeditan foto, website design, dan pemikiran kritis.
+          </p>
+
+          <div class="buttons">
+            <a class="btn" href="#portfolio">START GAME</a>
+            <a class="btn secondary" href="#projects">VIEW QUEST</a>
+            <a class="btn whatsapp" id="waButton" href="#" target="_blank" hidden>CHAT WA</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container">
+        <div class="section-head">
+          <h2>ABOUT PLAYER</h2>
+          <p>Profil singkat, pendidikan, dan minat kreatif.</p>
+        </div>
+
+        <div class="cards">
+          <article class="panel">
+            <h3>PROFILE</h3>
+            <p id="aboutBio">Loading profile...</p>
+          </article>
+
+          <article class="panel">
+            <h3>EDUCATION</h3>
+            <p id="education">S1 Psikologi, 2023 sampai sekarang.</p>
+          </article>
+
+          <article class="panel">
+            <h3>INTEREST</h3>
+            <p id="interests">Design, photo editing, website, psychology.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="container">
+        <div class="section-head">
+          <h2>SKILL INVENTORY</h2>
+          <p>Tools dan kemampuan yang mendukung proses kreatif.</p>
+        </div>
+
+        <div class="cards">
+          <article class="panel">
+            <h3>SOFTWARE</h3>
+            <div class="tag-list" id="softwareTags"></div>
+          </article>
+
+          <article class="panel">
+            <h3>HARD SKILLS</h3>
+            <div class="tag-list" id="hardSkillTags"></div>
+          </article>
+
+          <article class="panel">
+            <h3>SOFT SKILLS</h3>
+            <div class="tag-list" id="softSkillTags"></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="container">
+        <div class="section-head">
+          <h2>QUEST LOG</h2>
+          <p>Daftar project yang dibaca otomatis dari Google Drive dan Google Sheets.</p>
+        </div>
+
+        <div class="projects" id="projectList">
+          <p>Loading projects...</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="portfolio">
+      <div class="container">
+        <div class="section-head">
+          <h2>PIXEL GALLERY</h2>
+          <p>Foto dan video portfolio yang otomatis muncul dari folder utama Google Drive.</p>
+        </div>
+
+        <div class="portfolio" id="mediaList">
+          <p>Loading media...</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="section-head">
+          <h2>CONTACT PORTAL</h2>
+          <p>Tekan tombol WhatsApp untuk mulai chat.</p>
+        </div>
+
+        <a class="btn whatsapp" id="waButtonBottom" href="#" target="_blank" hidden>
+          HUBUNGI SAYA
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      © <span id="year"></span> Lintang Nur Fadhillah Yunus. Portfolio mode: retro arcade.
+    </div>
+  </footer>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbxJVfU73sfC1z6mBwoNrPJ7_ipopIYrY0Y-mu8Jzu5_X-nx0Qfa5XshoUiE1qGE-Fo2/exec";
+
+    const fallbackProfile = {
+      full_name: "Lintang Nur Fadhillah Yunus",
+      role: "Mahasiswa aktif",
+      headline: "Mahasiswa Psikologi & Creative Enthusiast",
+      tagline: "Berani dan Kreatif",
+      bio: "Mahasiswa aktif Psikologi yang tertarik pada desain grafis, pengeditan foto, website design, dan pemikiran kritis.",
+      education: "S1 Psikologi, 2023 sampai sekarang.",
+      interests: "Desain grafis; Pengeditan foto; Website design; Psikologi; Debat dan diskusi",
+      software: "Canva; Adobe Lightroom; Affinity by Canva; Basic HTML; Basic CSS",
+      hard_skills: "Bahasa Inggris; Desain grafis; Photo editing; Konten visual; Public speaking; Riset; Copywriting dasar",
+      soft_skills: "Teamwork; Open-minded; Berpikir kritis; Komunikatif; Kreatif; Adaptif; Problem solving; Manajemen waktu"
+    };
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    function loadJsonp(url) {
+      return new Promise((resolve, reject) => {
+        const callbackName = "portfolioCallback_" + Date.now();
+
+        window[callbackName] = function(data) {
+          resolve(data);
+          delete window[callbackName];
+          script.remove();
+        };
+
+        const script = document.createElement("script");
+        const separator = url.includes("?") ? "&" : "?";
+
+        script.src = url + separator + "callback=" + callbackName;
+        script.onerror = reject;
+
+        document.body.appendChild(script);
+      });
+    }
+
+    function toMap(profileRows) {
+      const map = {};
+
+      if (!Array.isArray(profileRows)) return map;
+
+      profileRows.forEach(item => {
+        map[item.field_key] = item.value;
+      });
+
+      return map;
+    }
+
+    function splitTags(value) {
+      return String(value || "")
+        .split(";")
+        .map(item => item.trim())
+        .filter(Boolean);
+    }
+
+    function renderTags(id, value) {
+      const el = document.getElementById(id);
+      const tags = splitTags(value);
+
+      el.innerHTML = tags
+        .map(tag => `<span class="tag">${escapeHtml(tag)}</span>`)
+        .join("");
+    }
+
+    function renderProfile(profileRows, contact) {
+      const data = {
+        ...fallbackProfile,
+        ...toMap(profileRows)
+      };
+
+      document.getElementById("name").textContent = data.full_name;
+      document.getElementById("role").textContent = data.role;
+      document.getElementById("typeText").textContent = data.tagline;
+      document.getElementById("bio").textContent = data.bio;
+      document.getElementById("aboutBio").textContent = data.bio;
+      document.getElementById("education").textContent = data.education;
+      document.getElementById("interests").textContent = data.interests;
+
+      renderTags("softwareTags", data.software);
+      renderTags("hardSkillTags", data.hard_skills);
+      renderTags("softSkillTags", data.soft_skills);
+
+      const waButtons = [
+        document.getElementById("waButton"),
+        document.getElementById("waButtonBottom")
+      ];
+
+      if (contact && contact.whatsapp_url) {
+        waButtons.forEach(button => {
+          button.href = contact.whatsapp_url;
+          button.textContent = contact.contact_button_text || "Hubungi Saya";
+          button.hidden = false;
+        });
+      }
+    }
+
+    function renderProjects(projects) {
+      const el = document.getElementById("projectList");
+
+      if (!Array.isArray(projects) || projects.length === 0) {
+        el.innerHTML = `<p class="error">Belum ada project. Cek tab Projects di Google Sheets.</p>`;
+        return;
+      }
+
+      el.innerHTML = projects.map(project => `
+        <article class="project-card">
+          <span>${escapeHtml(project.category || "Portfolio")}</span>
+          <h3>${escapeHtml(project.project_name || "Untitled Project")}</h3>
+          <p>${escapeHtml(project.short_description || project.full_description || "Project portfolio kreatif.")}</p>
+        </article>
+      `).join("");
+    }
+
+    function renderMedia(media) {
+      const el = document.getElementById("mediaList");
+
+      if (!Array.isArray(media) || media.length === 0) {
+        el.innerHTML = `<p class="error">Belum ada media. Upload foto ke folder Drive utama, lalu sync Apps Script.</p>`;
+        return;
+      }
+
+      el.innerHTML = media.map(item => {
+        const title = item.title || item.file_name || "Portfolio item";
+        const img = item.media_type === "video"
+          ? `<video src="${item.public_file_url}" controls preload="metadata"></video>`
+          : `<img src="${item.thumbnail_url || item.public_file_url}" alt="${escapeHtml(item.alt_text || title)}" loading="lazy">`;
+
+        return `
+          <article class="media-card">
+            ${img}
+            <div class="media-content">
+              <span>${escapeHtml(item.category || "Portfolio")}</span>
+              <h3>${escapeHtml(title)}</h3>
+              <p>${escapeHtml(item.project_name || "")}</p>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    async function init() {
+      renderProfile([], null);
+
+      if (API_URL.includes("PASTE_WEB_APP_URL")) {
+        document.getElementById("projectList").innerHTML =
+          `<p class="error">Masukkan URL Apps Script di bagian API_URL dulu.</p>`;
+
+        document.getElementById("mediaList").innerHTML =
+          `<p class="error">Website belum tersambung ke backend.</p>`;
+        return;
+      }
+
+      try {
+        const payload = await loadJsonp(API_URL);
+        const data = payload.data || {};
+
+        renderProfile(data.profile || [], data.contact || null);
+        renderProjects(data.projects || []);
+        renderMedia(data.media || []);
+      } catch (error) {
+        console.error(error);
+
+        document.getElementById("projectList").innerHTML =
+          `<p class="error">Gagal mengambil data project dari API.</p>`;
+
+        document.getElementById("mediaList").innerHTML =
+          `<p class="error">Gagal mengambil media dari Google Drive.</p>`;
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
